@@ -1,4 +1,33 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import Booking
+
+@csrf_exempt  # Temporarily disable CSRF protection for simplicity (not recommended for production)
+def save_booking(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            booking = Booking.objects.create(
+                staff=data['staff'],
+                service=data['service'],
+                date=data['date'],
+                start_time=data['startTime'],
+                end_time=data['endTime'],
+                payment_method=data['paymentMethod'],
+                card_number=data.get('cardNumber', ''),
+                expiry_date=data.get('expiryDate', ''),
+                cvv=data.get('cvv', ''),
+                bank_name=data.get('bankName', ''),
+                account_number=data.get('accountNumber', ''),
+                additional_notes=data.get('additionalNotes', '')
+            )
+            return JsonResponse({"status": "success", "message": "Booking saved!", "booking_id": booking.id})
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)})
+
+    return JsonResponse({"status": "error", "message": "Invalid request"}, status=400)
 
 # Create your views here.
 def service(request):
