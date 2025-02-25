@@ -43,40 +43,42 @@
         <a href="/admin-services"> Services</a>
         <a href="/admin-payments">Payments</a>
         <a href="/admin-reviews">Reviews</a>
-
     </div>
     <div class="content">
-    <div class="card mt-4 p-3">
-        <h1>Manage Bookings</h1>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Booking ID</th>
-                    <th>Users</th>
-                    <th>Service</th>
-                    <th>Staff</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>000000</td>
-                    <td>Users Name</td>
-                    <td>aromatherapy</td>
-                    <td>Staff 1</td>
-                    <td>2025-02-10</td>
-                    <td>14:00 - 15:00</td>
-                    <td>Pending</td>
-                    <td><button class="btn btn-success btn-sm">Approve</button> <button class="btn btn-danger btn-sm">Cancel</button></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="card mt-4 p-3">
+            <h1>Manage Bookings</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Users</th>
+                        <th>Service</th>
+                        <th>Staff</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.id }}</td>
+                        <td>{{ booking.user.username }}</td>
+                        <td>{{ booking.service }}</td>
+                        <td>{{ booking.staff }}</td>
+                        <td>{{ booking.date }}</td>
+                        <td>{{ booking.start_time }} - {{ booking.end_time }}</td>
+                        <td>{{ booking.status }}</td>
+                        <td>
+                            <button class="btn btn-success btn-sm">Approve</button>
+                            <button class="btn btn-danger btn-sm">Cancel</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-   
 </body>
 </html>
-

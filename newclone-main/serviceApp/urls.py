@@ -24,11 +24,13 @@ urlpatterns = [
     path('booking1/',views.booking1),
     path('account/',views.account),
     path('admin-services/',views.a_service),
-    path('admin-bookings/',views.a_booking),
+    #path('admin-bookings/',views.a_booking),
     path('ad/',views.a_dashboard),
     path('admin-employees/',views.a_emp),
     path('admin-payments/',views.a_playment),
     path('admin-reviews/',views.a_review),
-    path('admin-users/',views.a_users),
-    path('save-booking/', views.save_booking, name='save-booking')
+    #path('admin-users/',views.a_users),
+    path('save-booking/', views.save_booking, name='save-booking'),
+    path('admin-bookings/', views.admin_bookings, name='admin_bookings'),
+    path('admin-users/', views.manage_staff, name='manage_staff'),
 ]

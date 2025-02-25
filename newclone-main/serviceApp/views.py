@@ -29,6 +29,28 @@ def save_booking(request):
 
     return JsonResponse({"status": "error", "message": "Invalid request"}, status=400)
 
+def admin_bookings(request):
+    bookings = Booking.objects.all()
+    print(bookings)  # Check if the queryset is being fetched
+    return render(request, 'admin-bookings.html', {'bookings': bookings})
+
+# views.py
+from django.shortcuts import render, redirect
+from .models import Staff
+from .form import StaffForm
+
+def manage_staff(request):
+    if request.method == "POST":
+        form = StaffForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('manage_staff')
+    else:
+        form = StaffForm()
+    staff_list = Staff.objects.all()
+    return render(request, 'admin/manage_staff.html', {'form': form, 'staff_list': staff_list})
+
+
 # Create your views here.
 def service(request):
     return render(request,'service.html')

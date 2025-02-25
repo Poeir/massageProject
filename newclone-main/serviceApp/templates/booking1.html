@@ -310,4 +310,40 @@
 
 
         </script>
+        <script>
+            function sendDataToServer() {
+                fetch('/save-booking/', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": getCSRFToken() // Needed if CSRF protection is enabled
+                    },
+                    body: JSON.stringify(bookingData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert("Booking saved successfully!");
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            }
+            
+            // Utility function to get CSRF token
+            function getCSRFToken() {
+                return document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
+            }
+            
+            // Call function when Confirm button is clicked
+            document.getElementById("confirm-btn").addEventListener("click", function () {
+                let bookingNumber = Math.floor(100000 + Math.random() * 900000);
+                document.getElementById("receipt-number").innerText = bookingNumber;
+                sendDataToServer();  // Call function to send data to the backend
+                currentStep = 3;
+                updateSteps();
+            });
+            </script>
+
 {%endblock%}

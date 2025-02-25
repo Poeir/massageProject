@@ -63,18 +63,19 @@
                 </tr>
             </thead>
             <tbody>
+                {% for staff in staff_list %}
                 <tr>
-                    <td>000000</td>
-                    <td>Staff Name</td>
-                    <td>Staff Speciality</td>
-                    <td>Staff Role</td>
-                    <td>0.00</td>
-                    <td>012-345-6789</td>
-                    <td>2001-02-10</td>
-                    <td>Available</td>
+                    <td>{{ staff.staff_id }}</td>
+                    <td>{{ staff.name }}</td>
+                    <td>{{ staff.speciality }}</td>
+                    <td>{{ staff.role }}</td>
+                    <td>{{ staff.commission_rate }}</td>
+                    <td>{{ staff.phone }}</td>
+                    <td>{{ staff.birthdate }}</td>
+                    <td>{{ staff.status }}</td>
                     <td><button class="btn btn-primary btn-sm">Edit</button> <button class="btn btn-danger btn-sm">Delete</button></td>
                 </tr>
-
+                {% endfor %}
             </tbody>
         </table>
     </div>

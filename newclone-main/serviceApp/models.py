@@ -27,3 +27,17 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.service} with {self.staff} on {self.date}"
+
+class Staff(models.Model):
+    staff_id = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    speciality = models.CharField(max_length=100)
+    role = models.CharField(max_length=100)
+    commission_rate = models.DecimalField(max_digits=5, decimal_places=2)
+    phone = models.CharField(max_length=15)
+    birthdate = models.DateField()
+    status = models.CharField(max_length=50, default="Available")
+
+    def __str__(self):
+        return self.name
+
