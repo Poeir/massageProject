@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="account-container">
+        <!-- Profile Section -->
+        <h2 style="text-align: center;">My Account</h2>
+        <br>
+        <div class="d-flex align-items-center mb-4">
+            <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic me-3">
+            <div>
+                <h4>Sawanya Siri</h4>
+                <p>Email: sawanya@gmail.com <br>
+                Address: Mahasarakham 44000 <br>
+                Phone: 123-456-7890 <br>
+                Birthdate: 01/01/2001</p>
+                <button class="btn btn-primary">Edit Profile</button>
+            </div>
+        </div>
+
+        <!-- Booking History -->
+        <h3>My Bookings</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Date & Time</th>
+                    <th>Service</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#12345</td>
+                    <td>2025-02-05 | 10:00 AM</td>
+                    <td>Full Body Massage</td>
+                    <td><span class="booking-status confirmed">Confirmed</span></td>
+                </tr>
+                <tr>
+                    <td>#12346</td>
+                    <td>2025-02-10 | 2:00 PM</td>
+                    <td>Aromatherapy</td>
+                    <td><span class="booking-status pending">Pending</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Payment Methods -->
+        <h3>Payment Methods</h3>
+        <ul class="list-group mb-3">
+            <li class="list-group-item">Visa **** **** **** 1234 <button
+                    class="btn btn-danger btn-sm float-end">Remove</button></li>
+            <li class="list-group-item">MasterCard **** **** **** 5678 <button
+                    class="btn btn-danger btn-sm float-end">Remove</button></li>
+        </ul>
+        <button class="btn btn-success">Add Payment Method</button>
+
+        <!-- Logout Button -->
+        <div class="text-center mt-4">
+            <button class="btn btn-secondary">Logout</button>
+        </div>
+    </div>
+
+    <!-- FOOTTER -->
+    <footer>
+        <a class="logo" style="color: #DAC494;     text-shadow: rgb(158, 158, 158) 1px 0 10px;
+font-size: 25px; margin-top: 50px; margin-left: 20px;" href="./index">MASSAGE & SPA</a>
+        <div class="nav">
+            <div class="links">
+                <ul>
+                    <li style=" color: #DAC494; font-size: 18px; font-weight: bold;">Link</li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/service">Services</a></li>
+                    <li><a href="/review">Review</a></li>
+                    <li><a href="/account">Account</a></li>
+                </ul>
+            </div>
+            <div class="social">
+                <ul>
+                    <li style="color: #DAC494; font-size: 18px; font-weight: bold;">Contact</li>
+                    <li>Email : @gmail.com</li>
+                    <li> Phone : 08812345678</li>
+                    <li> Address : 123 kosumpisai</li>
+                </ul>
+            </div>
+
+            <div class="opening">
+                <ul>
+                    <li style="color: #DAC494; font-size: 18px; font-weight: bold;">Opening Time</li>
+                    <li>Open 7 days a week </li>
+                    <li>10:00 - 00:00</li>
+
+                </ul>
+            </div>
+        </div>
+    </footer>
+{%endblock%}

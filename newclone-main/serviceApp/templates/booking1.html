@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div class="progress-steps">
+            <div class="step active">1</div>
+            <div class="step">2</div>
+            <div class="step">3</div>
+        </div>
+    </div>
+
+    <div class="form-container">
+
+
+        <div class="step-content active" id="step-1">
+            <section id="book" class="booking-section">
+                <div class="booking-form">
+                    <h2>Book Your Appointment</h2>
+                    <form>
+                        <label for="staff">Select Staff:</label>
+                        <select id="staff" name="staff" required>
+                            <option value="">-- Please Choose a Staff --</option>
+                            <option value="staff 1">Staff 1</option>
+                            <option value="staff 2">Staff 2</option>
+                            <option value="staff 3">Staff 3</option>
+                        </select>
+
+                        <label for="service">Select Service:</label>
+                        <select id="service" name="service" required>
+                            <option value="">-- Please Choose a Service --</option>
+                            <option value="full-body-massage">Full Body Massage</option>
+                            <option value="aromatherapy">Aromatherapy</option>
+                            <option value="facial-treatment">Facial Treatment</option>
+                        </select>
+
+                        <label for="date">Preferred Date:</label>
+                        <input type="date" id="date" name="date" required>
+
+                        <div class="time-container">
+                            <label for="start-time">From:</label>
+                            <input type="time" id="start-time" name="start-time" required>
+
+                            <label for="end-time">To:</label>
+                            <input type="time" id="end-time" name="end-time" required>
+                        </div>
+
+                        <label for="message">Additional Notes:</label>
+                        <textarea id="message" name="message" rows="4"></textarea>
+                    </form>
+                    <button class="next">Next</button>
+                </div>
+            </section>
+        </div>
+
+
+        <div class="step-content" id="step-2">
+            <section id="book" class="booking-section">
+                <div class="booking-form">
+                    <h2>Choose Payment Method</h2>
+
+                    <form id="payment-form">
+                        <div class="payment-container">
+                            <label><input type="radio" name="payment-method" value="credit card" id="credit-card"
+                                    class="payment-method"> Credit Card</label>
+                            <label><input type="radio" name="payment-method" value="bank transfer" id="bank-transfer"
+                                    class="payment-method"> Bank Transfer</label>
+                            <label><input type="radio" name="payment-method" value="cash" id="cash"
+                                    class="payment-method"> Cash</label>
+
+                            <div id="credit-card-fields" class="payment-fields" style="display: none;">
+                                <label for="card-number">Card Number:</label>
+                                <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456"
+                                    required>
+                                <label for="expiry-date">Expiry Date:</label>
+                                <input type="month" id="expiry-date" name="expiry-date" required>
+                                <label for="cvv">CVV:</label>
+                                <input type="text" id="cvv" name="cvv" placeholder="123" required>
+                            </div>
+
+                            <div id="bank-transfer-fields" class="payment-fields" style="display: none;">
+                                <label for="bank-name">Bank Name:</label>
+                                <input type="text" id="bank-name" name="bank-name" placeholder="Bank Name" required>
+                                <label for="account-number">Account Number:</label>
+                                <input type="text" id="account-number" name="account-number"
+                                    placeholder="Account Number" required>
+                            </div>
+
+                            <div id="cash-fields" class="payment-fields" style="display: none;">
+                                <p>Please pay the amount in cash at the store during your visit.</p>
+                            </div>
+                        </div>
+                    </form>
+
+                    <button class="next">Next</button>
+                    <br>
+                    <button class="prev">Previous</button>
+                </div>
+            </section>
+        </div>
+
+        <div class="step-content" id="step-3">
+            <section id="confirmation-section" class="booking-section">
+                <div class="booking-form">
+                    <h2>Confirm Your Booking</h2>
+                    <p><strong>Staff:</strong> <span id="confirm-staff"></span></p>
+                    <p><strong>Service:</strong> <span id="confirm-service"></span></p>
+                    <p><strong>Date:</strong> <span id="confirm-date"></span></p>
+                    <p><strong>Time:</strong> <span id="confirm-time"></span></p>
+                    <p><strong>Payment Method:</strong> <span id="confirm-payments"></span></p>
+                    <p><strong>Payment Details:</strong> <span id="confirm-payment-details"></span></p>
+                    <p><strong>Additional Notes:</strong> <span id="confirm-notes"></span></p>
+                    <button class="next" id="confirm-btn">Confirm Booking</button>
+                    <br>
+                    <button class="prev">Previous</button>
+                </div>
+            </section>
+        </div>
+
+        <div class="step-content" id="step-4">
+            <section id="receipt-section" class="booking-section">
+                <div class="booking-form">
+                    <h2>Booking Receipt</h2>
+                    <p><strong>Receipt Number:</strong> <span id="receipt-number"></span></p>
+                    <p><strong>Staff:</strong> <span id="receipt-staff"></span></p>
+                    <p><strong>Service:</strong> <span id="receipt-service"></span></p>
+                    <p><strong>Date:</strong> <span id="receipt-date"></span></p>
+                    <p><strong>Time:</strong> <span id="receipt-time"></span></p>
+                    <p><strong>Notes:</strong> <span id="receipt-notes"></span></p>
+                    <p><strong>Payment Method:</strong> <span id="receipt-payments"></span></p>
+
+                    <button onclick="printReceipt()">Print Receipt</button>
+                </div>
+            </section>
+        </div>
+
+        <script>
+            let currentStep = 0;
+            const steps = document.querySelectorAll(".step");
+            const contents = document.querySelectorAll(".step-content");
+            const nextButtons = document.querySelectorAll(".next");
+            const prevButtons = document.querySelectorAll(".prev");
+
+            // ตัวแปรสำหรับเก็บข้อมูล
+            let bookingData = {
+                staff: '',
+                service: '',
+                date: '',
+                startTime: '',
+                endTime: '',
+                paymentMethod: '',
+                cardNumber: '',
+                expiryDate: '',
+                cvv: '',
+                bankName: '',
+                accountNumber: '',
+                additionalNotes: ''
+            };
+
+            function updateSteps() {
+                steps.forEach((step, index) => {
+                    step.classList.toggle("active", index <= currentStep);
+                });
+
+                contents.forEach((content, index) => {
+                    content.classList.toggle("active", index === currentStep);
+                });
+            }
+
+            function validateStep(step) {
+                if (step === 0) { // Step 1 validation
+                    const staff = document.querySelector('#staff').value;
+                    const service = document.querySelector('#service').value;
+                    const date = document.getElementById("date").value;
+                    const startTime = document.getElementById("start-time").value;
+                    const endTime = document.getElementById("end-time").value;
+
+                    if (!staff || !service || !date || !startTime || !endTime) {
+                        alert("Please fill in all fields before proceeding.");
+                        return false;
+                    }
+
+                    // เก็บค่าข้อมูล Step 1
+                    bookingData.staff = staff;
+                    bookingData.service = service;
+                    bookingData.date = date;
+                    bookingData.startTime = startTime;
+                    bookingData.endTime = endTime;
+                    bookingData.additionalNotes = document.getElementById("message").value;
+
+                } else if (step === 1) { // Step 2 validation
+                    const paymentMethod = document.querySelector('input[name="payment-method"]:checked');
+                    if (!paymentMethod) {
+                        alert("Please select a payment method.");
+                        return false;
+                    }
+
+                    // เก็บค่าข้อมูล Payment Method
+                    bookingData.paymentMethod = paymentMethod.value;
+
+                    if (bookingData.paymentMethod === 'credit card') {
+                        bookingData.cardNumber = document.getElementById("card-number").value;
+                        bookingData.expiryDate = document.getElementById("expiry-date").value;
+                        bookingData.cvv = document.getElementById("cvv").value;
+                    } else if (bookingData.paymentMethod === 'bank transfer') {
+                        bookingData.bankName = document.getElementById("bank-name").value;
+                        bookingData.accountNumber = document.getElementById("account-number").value;
+                    }
+                }
+                return true;
+            }
+
+            // ฟังก์ชันแสดงข้อมูลใน Step 3
+            function displayConfirmation() {
+                document.getElementById("confirm-staff").textContent = bookingData.staff;
+                document.getElementById("confirm-service").textContent = bookingData.service;
+                document.getElementById("confirm-date").textContent = bookingData.date;
+                document.getElementById("confirm-time").textContent = `${bookingData.startTime} - ${bookingData.endTime}`;
+                document.getElementById("confirm-payments").textContent = bookingData.paymentMethod;
+
+                if (bookingData.paymentMethod === 'credit card') {
+                    document.getElementById("confirm-payment-details").textContent = `Card Number: ${bookingData.cardNumber}, Expiry Date: ${bookingData.expiryDate}`;
+                } else if (bookingData.paymentMethod === 'bank transfer') {
+                    document.getElementById("confirm-payment-details").textContent = `Bank Name: ${bookingData.bankName}, Account Number: ${bookingData.accountNumber}`;
+                }
+
+                document.getElementById("confirm-notes").textContent = bookingData.additionalNotes;
+            }
+
+            nextButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    if (validateStep(currentStep)) {
+                        if (currentStep < steps.length - 1) {
+                            currentStep++;
+                            updateSteps();
+
+                            // แสดงข้อมูลใน Step 3
+                            if (currentStep === 2) {
+                                displayConfirmation();
+                            }
+                        }
+                    }
+                });
+            });
+
+            prevButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    if (currentStep > 0) {
+                        currentStep--;
+                        updateSteps();
+                    }
+                });
+            });
+
+            updateSteps();
+
+            document.querySelectorAll('.payment-method').forEach((paymentOption) => {
+                paymentOption.addEventListener('change', function () {
+                    const selectedPaymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+
+                    // ซ่อนฟอร์มทั้งหมดก่อน
+                    document.querySelectorAll('.payment-fields').forEach((field) => {
+                        field.style.display = 'none';
+                    });
+
+                    // แสดงฟอร์มที่เกี่ยวข้องกับช่องทางการชำระเงินที่เลือก
+                    if (selectedPaymentMethod === 'credit card') {
+                        document.getElementById('credit-card-fields').style.display = 'block';
+                    } else if (selectedPaymentMethod === 'bank transfer') {
+                        document.getElementById('bank-transfer-fields').style.display = 'block';
+                    } else if (selectedPaymentMethod === 'cash') {
+                        document.getElementById('cash-fields').style.display = 'block';
+                    }
+                });
+            });
+
+
+            // ---------------- ใบเสร็จ -----------------
+            document.getElementById("confirm-btn").addEventListener("click", function () {
+                let bookingNumber = Math.floor(100000 + Math.random() * 900000);
+
+                // Update receipt details
+                document.getElementById("receipt-number").innerText = bookingNumber;
+                document.getElementById("receipt-staff").innerText = document.getElementById("confirm-staff").innerText;
+                document.getElementById("receipt-service").innerText = document.getElementById("confirm-service").innerText;
+                document.getElementById("receipt-date").innerText = document.getElementById("confirm-date").innerText;
+                document.getElementById("receipt-time").innerText = document.getElementById("confirm-time").innerText;
+                document.getElementById("receipt-notes").innerText = document.getElementById("confirm-notes").innerText;
+                document.getElementById("receipt-payments").innerText = document.getElementById("confirm-payments").innerText;
+
+                // Move to step 4 (receipt step)
+                currentStep = 3; // Set to step 4 (index starts at 0)
+                updateSteps();
+            });
+
+            // Function to print the receipt
+            function printReceipt() {
+                let receiptContent = document.getElementById("receipt-section").innerHTML;
+                let originalContent = document.body.innerHTML;
+
+                document.body.innerHTML = receiptContent;
+                window.print();
+                document.body.innerHTML = originalContent;
+            }
+
+
+
+
+        </script>
+{%endblock%}
